@@ -1,0 +1,34 @@
+<h2>ActewAGL Electricity Bill Calculator</h2>
+<p>
+  This calculator is to help you get the approximate bill when you need based on
+  the ActewAGL calculation. You can download your usage history file under your
+  Electricity account.
+</p>
+<p>
+  <strong>Note: This app does not track your data uploaded.</strong> Here's the
+  columns needed for the calculation to work:
+</p>
+<ul>
+  <li>Register Description</li>
+  <li>Reading Date</li>
+  <li>Units</li>
+</ul>
+
+<app-excel-upload
+  (fileSubmission)="calculateElectricityBill($event)"
+></app-excel-upload>
+
+<hr />
+<h3>Total</h3>
+<app-actewagl-table-cost
+  [listOfTotalActewAGLCost]="listOfTotalActewAGLCost"
+></app-actewagl-table-cost>
+
+<h3>Daily Breakdown</h3>
+@for (actewAGLCost of dateCostBreakdowns | keyvalue ; track $index) {
+<h4>Date {{ actewAGLCost.key }}</h4>
+<app-actewagl-table-cost
+  [listOfTotalActewAGLCost]="actewAGLCost.value"
+></app-actewagl-table-cost>
+
+}

@@ -1,0 +1,46 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Usage Type</th>
+      <th scope="col">Rate</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">GST</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (actewAGLCost of listOfTotalActewAGLCost(); track
+    actewAGLCost.usageType) {
+    <tr>
+      <td>
+        {{ actewAGLCost.usageType }}
+      </td>
+      <td>{{ actewAGLCost.rate | currency : "AUD" }}</td>
+      <td>{{ actewAGLCost.quantity | number : "1.2-2" }} kWh</td>
+      <td>
+        {{
+          actewAGLCost.gst * actewAGLCost.rate * actewAGLCost.quantity
+            | currency : "AUD"
+        }}
+      </td>
+      <td>
+        {{ actewAGLCost.total | currency : "AUD" }}
+      </td>
+    </tr>
+    }
+    <tr>
+      <td colspan="4" class="text-end">
+        <strong>Total {{ saving() ? "saving" : "cost" }}</strong>
+      </td>
+      <td
+        [ngClass]="{
+          'bg-success': saving(),
+          'bg-danger': !saving(),
+          'text-light': true
+        }"
+      >
+        <strong>{{ total() | currency : "AUD" }}</strong>
+      </td>
+    </tr>
+  </tbody>
+</table>
