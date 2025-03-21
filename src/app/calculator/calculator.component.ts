@@ -29,6 +29,7 @@ export class CalculatorComponent implements OnInit {
 
   listOfTotalActewAGLCost: ActewAGLElectricityCost[] = [];
   dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]> = {};
+  numberOfDays = 0;
 
   ngOnInit() {
     this.resetCost();
@@ -87,6 +88,9 @@ export class CalculatorComponent implements OnInit {
           costbreakdown.rate * costbreakdown.quantity +
           costbreakdown.rate * costbreakdown.quantity * costbreakdown.gst;
       }
+
+      // Get number of days in the spreadsheet
+      this.numberOfDays = Object.keys(this.dateCostBreakdowns).length;
     }
   }
 }

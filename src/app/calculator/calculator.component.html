@@ -19,7 +19,11 @@
 ></app-excel-upload>
 
 <hr />
-<h3>Total</h3>
+<h3>
+  Total @if(numberOfDays > 0) {
+  {{ numberOfDays }}
+  @if (numberOfDays > 1) { days } @else { day } }
+</h3>
 <app-actewagl-table-cost
   [listOfTotalActewAGLCost]="listOfTotalActewAGLCost"
 ></app-actewagl-table-cost>
