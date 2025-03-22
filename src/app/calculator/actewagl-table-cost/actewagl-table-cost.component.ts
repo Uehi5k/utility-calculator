@@ -15,17 +15,19 @@ import {
   CommonModule,
   PercentPipe,
 } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { calculateActewAGLElectricityCostTotal } from '../../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-actewagl-table-cost',
-  imports: [CurrencyPipe, DecimalPipe, PercentPipe, CommonModule],
+  imports: [CurrencyPipe, DecimalPipe, PercentPipe, CommonModule, FormsModule],
   templateUrl: './actewagl-table-cost.component.html',
   styleUrl: './actewagl-table-cost.component.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActewaglTableCostComponent {
-  listOfTotalActewAGLCost = input<ActewAGLElectricityCost[]>([]);
+  listOfTotalActewAGLCost = model<ActewAGLElectricityCost[]>([]);
   numberOfDays = input<number>(0);
   fromDate = input<string>('');
   toDate = input<string>('');
@@ -74,4 +76,26 @@ export class ActewaglTableCostComponent {
   saving = computed<boolean>(() => {
     return this.totalIncludingSupply() < 0;
   });
+
+  /**
+   * Update usage type rate
+   * @param actewAGLElectricityCost (ActewAGLElectricityCost)
+   * @param newRate (number)
+   */
+  updateUsageTypeRate(
+    actewAGLElectricityCost: ActewAGLElectricityCost,
+    newRate: number
+  ) {
+    this.listOfTotalActewAGLCost.update((list) => {
+      const cost = list.find(
+        (l) => l.usageType === actewAGLElectricityCost.usageType
+      );
+      if (cost) {
+        cost.rate = newRate;
+        cost.total = calculateActewAGLElectricityCostTotal(cost);
+      }
+
+      return [...list];
+    });
+  }
 }

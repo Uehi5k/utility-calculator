@@ -12,7 +12,10 @@ import { getHeaderIndices } from '../common/utils/excel.utils';
 import { ActewaglTableCostComponent } from './actewagl-table-cost/actewagl-table-cost.component';
 import { CommonModule } from '@angular/common';
 import { ActewaglDailyBreakdownComponent } from './actewagl-daily-breakdown/actewagl-daily-breakdown.component';
-import { roundingFloatIssue } from '../common/utils/calculation.utils';
+import {
+  calculateActewAGLElectricityCostTotal,
+  roundingFloatIssue,
+} from '../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-calculator',
@@ -29,7 +32,6 @@ import { roundingFloatIssue } from '../common/utils/calculation.utils';
 })
 export class CalculatorComponent implements OnInit {
   private electricityCalculationService = inject(ElectricityCalculationService);
-
   listOfTotalActewAGLCost: ActewAGLElectricityCost[] = [];
   dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]> = {};
   numberOfDays = 0;
@@ -83,15 +85,13 @@ export class CalculatorComponent implements OnInit {
 
       if (cost) {
         cost.quantity += isNaN(quantity) ? 0 : quantity;
-        cost.total =
-          cost.rate * cost.quantity + cost.rate * cost.quantity * cost.gst;
+        cost.total = calculateActewAGLElectricityCostTotal(cost);
       }
 
       if (costbreakdown) {
         costbreakdown.quantity += isNaN(quantity) ? 0 : quantity;
         costbreakdown.total =
-          costbreakdown.rate * costbreakdown.quantity +
-          costbreakdown.rate * costbreakdown.quantity * costbreakdown.gst;
+          calculateActewAGLElectricityCostTotal(costbreakdown);
       }
     }
 

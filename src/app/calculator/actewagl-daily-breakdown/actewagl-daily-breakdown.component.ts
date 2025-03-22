@@ -9,6 +9,7 @@ import {
   ActewAGLElectricityCost,
   ActewAGLElectricityUsage,
 } from '../../common/models/electricity.model';
+import { roundingFloatIssue } from '../../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-actewagl-daily-breakdown',
@@ -66,10 +67,10 @@ export class ActewaglDailyBreakdownComponent {
 
     breakdowns.push([
       'Total',
-      `${totalPeakQuantity.toString()} kWh`,
-      `${totalShoulderQuantity.toString()} kWh`,
-      `${totalOffpeakQuantity.toString()} kWh`,
-      `${totalSolarQuantity.toString()} kWh`,
+      `${roundingFloatIssue(totalPeakQuantity).toString()} kWh`,
+      `${roundingFloatIssue(totalShoulderQuantity).toString()} kWh`,
+      `${roundingFloatIssue(totalOffpeakQuantity).toString()} kWh`,
+      `${roundingFloatIssue(totalSolarQuantity).toString()} kWh`,
     ]);
 
     return breakdowns;

@@ -37,7 +37,23 @@
       <td>
         <strong>{{ actewAGLCost.usageType }}</strong>
       </td>
-      <td>{{ actewAGLCost.rate | currency : "AUD" }}</td>
+      <td>
+        <div class="input-group input-group-sm rate-input">
+          <span
+            class="input-group-text"
+            [id]="'rate-usage' + actewAGLCost.usageType"
+            >A$</span
+          >
+          <input
+            type="number"
+            class="form-control"
+            aria-label="Rate"
+            [attr.aria-describedby]="'rate-usage' + actewAGLCost.usageType"
+            [ngModel]="actewAGLCost.rate"
+            (ngModelChange)="updateUsageTypeRate(actewAGLCost, $event)"
+          />
+        </div>
+      </td>
       <td>{{ actewAGLCost.quantity | number : "1.2-2" }} kWh</td>
       <td>
         {{
