@@ -12,6 +12,7 @@ import { getHeaderIndices } from '../common/utils/excel.utils';
 import { ActewaglTableCostComponent } from './actewagl-table-cost/actewagl-table-cost.component';
 import { CommonModule } from '@angular/common';
 import { ActewaglDailyBreakdownComponent } from './actewagl-daily-breakdown/actewagl-daily-breakdown.component';
+import { roundingFloatIssue } from '../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-calculator',
@@ -93,6 +94,14 @@ export class CalculatorComponent implements OnInit {
           costbreakdown.rate * costbreakdown.quantity * costbreakdown.gst;
       }
     }
+
+    // Rounding quantity and total
+    Object.keys(this.dateCostBreakdowns).forEach((date) => {
+      this.dateCostBreakdowns[date].forEach((usage) => {
+        usage.quantity = roundingFloatIssue(usage.quantity);
+        usage.total = roundingFloatIssue(usage.total);
+      });
+    });
 
     // Get from and end dates
     const datePeriod = this.electricityCalculationService.getDatePeriod(
