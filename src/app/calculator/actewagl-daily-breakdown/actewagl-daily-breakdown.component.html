@@ -1,0 +1,19 @@
+<h3>Daily Usage Breakdown</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      @for(header of tableHeaders; track $index) {
+      <th scope="col">{{ header }}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of tableData(); let rowIdx = $index; track rowIdx) {
+    <tr>
+      @for (cell of row; track $index) {
+      <td [ngClass]="{ 'fw-bold': $index === 0 }">{{ cell }}</td>
+      }
+    </tr>
+    }
+  </tbody>
+</table>
