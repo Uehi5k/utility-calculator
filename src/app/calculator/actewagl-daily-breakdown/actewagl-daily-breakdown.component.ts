@@ -28,14 +28,17 @@ export class ActewaglDailyBreakdownComponent {
     ActewAGLElectricityUsage.Shoulder,
     ActewAGLElectricityUsage.Offpeak,
     ActewAGLElectricityUsage.Solar,
+    'Cost',
   ];
   tableData = computed<string[][]>(() => {
     const breakdowns: string[][] = [];
     let totalPeakQuantity = 0;
     let totalShoulderQuantity = 0;
     let totalOffpeakQuantity = 0;
-    let totalSolarQuantity = -0;
+    let totalSolarQuantity = 0;
+    let finalCost = 0;
 
+    console.log(this.dateCostBreakdowns());
     // Add body data
     Object.keys(this.dateCostBreakdowns()).forEach((date) => {
       const cost = this.dateCostBreakdowns()[date];
@@ -51,18 +54,28 @@ export class ActewaglDailyBreakdownComponent {
       const solarQuantity =
         cost.find((c) => c.usageType === ActewAGLElectricityUsage.Solar)
           ?.quantity ?? 0;
+      const totalCost = cost.reduce((accumulator, currentValue) => {
+        accumulator += currentValue.total;
+        return accumulator;
+      }, 0);
+
       breakdowns.push([
         date,
         `${peakQuantity.toString()} kWh`,
         `${shoulderQuantity.toString()} kWh`,
         `${offpeakQuantity.toString()} kWh`,
         `${solarQuantity.toString()} kWh`,
+        totalCost.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'AUD',
+        }),
       ]);
 
       totalPeakQuantity += peakQuantity;
       totalShoulderQuantity += shoulderQuantity;
       totalOffpeakQuantity += offpeakQuantity;
       totalSolarQuantity += solarQuantity;
+      finalCost += totalCost;
     });
 
     breakdowns.push([
@@ -71,6 +84,7 @@ export class ActewaglDailyBreakdownComponent {
       `${roundingFloatIssue(totalShoulderQuantity).toString()} kWh`,
       `${roundingFloatIssue(totalOffpeakQuantity).toString()} kWh`,
       `${roundingFloatIssue(totalSolarQuantity).toString()} kWh`,
+      finalCost.toLocaleString('en-US', { style: 'currency', currency: 'AUD' }),
     ]);
 
     return breakdowns;

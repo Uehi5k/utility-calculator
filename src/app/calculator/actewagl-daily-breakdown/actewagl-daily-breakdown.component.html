@@ -11,7 +11,16 @@
     @for (row of tableData(); let rowIdx = $index; track rowIdx) {
     <tr>
       @for (cell of row; track $index) {
-      <td [ngClass]="{ 'fw-bold': $index === 0 }">{{ cell }}</td>
+      <td
+        [ngClass]="{
+          'fw-bold': $index === 0,
+          'bg-success': $index === 5 && cell.indexOf('-') === 0,
+          'bg-danger': $index === 5 && cell.indexOf('-') === -1,
+          'text-light': $index === 5
+        }"
+      >
+        {{ cell }}
+      </td>
       }
     </tr>
     }
