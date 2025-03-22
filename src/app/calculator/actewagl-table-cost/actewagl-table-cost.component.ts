@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   input,
+  model,
 } from '@angular/core';
 import { ActewAGLElectricityCost } from '../../common/models/electricity.model';
 import { CurrencyPipe, DecimalPipe, CommonModule } from '@angular/common';
@@ -17,21 +18,29 @@ import { CurrencyPipe, DecimalPipe, CommonModule } from '@angular/common';
 })
 export class ActewaglTableCostComponent {
   listOfTotalActewAGLCost = input<ActewAGLElectricityCost[]>([]);
+  numberOfDays = input<number>(0);
+  supplyChargeRate = model<number>(1.01);
+  supplyChargeRateGst = input<number>(0.1);
 
-  total = computed(() =>
+  total = computed<number>(() =>
     Math.abs(
       this.listOfTotalActewAGLCost().reduce((accumulator, currentValue) => {
         return accumulator + currentValue.total;
       }, 0)
     )
   );
-  saving = computed(() => {
-    const total = this.listOfTotalActewAGLCost().reduce(
-      (accumulator, currentValue) => {
-        return accumulator + currentValue.total;
-      },
-      0
-    );
-    return total < 0;
+
+  totalSupplyCharge = computed<number>(
+    () =>
+      this.numberOfDays() * this.supplyChargeRate() +
+      this.numberOfDays() * this.supplyChargeRate() * this.supplyChargeRateGst()
+  );
+
+  totalIncludingSupply = computed<number>(
+    () => this.total() + this.totalSupplyCharge()
+  );
+
+  saving = computed<boolean>(() => {
+    return this.totalIncludingSupply() < 0;
   });
 }

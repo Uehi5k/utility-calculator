@@ -18,21 +18,16 @@
   (fileSubmission)="calculateElectricityBill($event)"
 ></app-excel-upload>
 
+@if (numberOfDays > 0) {
 <hr />
-<h3>
-  Total @if(numberOfDays > 0) {
-  {{ numberOfDays }}
-  @if (numberOfDays > 1) { days } @else { day } }
-</h3>
+<h3>Total {{ numberOfDays }} @if (numberOfDays > 1) { days } @else { day }</h3>
+<p>
+  Period <strong>{{ fromDate }}</strong> to <strong>{{ toDate }}</strong>
+</p>
 <app-actewagl-table-cost
   [listOfTotalActewAGLCost]="listOfTotalActewAGLCost"
+  [numberOfDays]="numberOfDays"
 ></app-actewagl-table-cost>
 
 <h3>Daily Breakdown</h3>
-@for (actewAGLCost of dateCostBreakdowns | keyvalue ; track $index) {
-<h4>Date {{ actewAGLCost.key }}</h4>
-<app-actewagl-table-cost
-  [listOfTotalActewAGLCost]="actewAGLCost.value"
-></app-actewagl-table-cost>
-
 }

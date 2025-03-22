@@ -9,11 +9,26 @@
     </tr>
   </thead>
   <tbody>
-    @for (actewAGLCost of listOfTotalActewAGLCost(); track
+    @if (totalSupplyCharge() > 0) {
+    <tr>
+      <td><strong>Daily Supply Charge</strong></td>
+      <td>{{ supplyChargeRate() | currency : "AUD" }}</td>
+      <td>{{ numberOfDays() }} {{ numberOfDays() > 1 ? "days" : "day" }}</td>
+      <td>
+        {{
+          supplyChargeRate() * numberOfDays() * supplyChargeRateGst()
+            | currency : "AUD"
+        }}
+      </td>
+      <td>
+        {{ totalSupplyCharge() | currency : "AUD" }}
+      </td>
+    </tr>
+    } @for (actewAGLCost of listOfTotalActewAGLCost(); track
     actewAGLCost.usageType) {
     <tr>
       <td>
-        {{ actewAGLCost.usageType }}
+        <strong>{{ actewAGLCost.usageType }}</strong>
       </td>
       <td>{{ actewAGLCost.rate | currency : "AUD" }}</td>
       <td>{{ actewAGLCost.quantity | number : "1.2-2" }} kWh</td>
@@ -39,7 +54,7 @@
           'text-light': true
         }"
       >
-        <strong>{{ total() | currency : "AUD" }}</strong>
+        <strong>{{ totalIncludingSupply() | currency : "AUD" }}</strong>
       </td>
     </tr>
   </tbody>

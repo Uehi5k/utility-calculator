@@ -11,6 +11,7 @@ import { ExcelData } from '../common/models/file-upload.model';
 import { getHeaderIndices } from '../common/utils/excel.utils';
 import { ActewaglTableCostComponent } from './actewagl-table-cost/actewagl-table-cost.component';
 import { CommonModule } from '@angular/common';
+import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-calculator',
@@ -30,6 +31,8 @@ export class CalculatorComponent implements OnInit {
   listOfTotalActewAGLCost: ActewAGLElectricityCost[] = [];
   dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]> = {};
   numberOfDays = 0;
+  fromDate = '';
+  toDate = '';
 
   ngOnInit() {
     this.resetCost();
@@ -88,9 +91,28 @@ export class CalculatorComponent implements OnInit {
           costbreakdown.rate * costbreakdown.quantity +
           costbreakdown.rate * costbreakdown.quantity * costbreakdown.gst;
       }
-
-      // Get number of days in the spreadsheet
-      this.numberOfDays = Object.keys(this.dateCostBreakdowns).length;
     }
+
+    // Get from and end dates
+    const datePeriod = this.getDatePeriod(this.dateCostBreakdowns);
+    this.fromDate = datePeriod.fromDate;
+    this.toDate = datePeriod.toDate;
+
+    // Get number of days in the spreadsheet
+    this.numberOfDays = Object.keys(this.dateCostBreakdowns).length;
+  }
+
+  /**
+   * Get date period
+   * @param dateCostBreakdowns (Record<string, ActewAGLElectricityCost[]>)
+   * @returns ({ fromDate: string, toDate: string })
+   */
+  getDatePeriod(dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]>) {
+    const dates = Object.keys(dateCostBreakdowns).sort(
+      (a, b) =>
+        parse(a, 'dd/MM/yyyy', new Date()).getTime() -
+        parse(b, 'dd/MM/yyyy', new Date()).getTime()
+    );
+    return { fromDate: dates[0], toDate: dates[dates.length - 1] };
   }
 }
