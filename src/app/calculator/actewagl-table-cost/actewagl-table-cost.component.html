@@ -45,14 +45,22 @@
             | currency : "AUD"
         }}
       </td>
-      <td>
+      <td
+        [ngClass]="{
+          'bg-success': actewAGLCost.total < 0,
+          'text-light': actewAGLCost.total < 0
+        }"
+      >
         {{ actewAGLCost.total | currency : "AUD" }}
       </td>
     </tr>
     }
     <tr>
       <td colspan="4" class="text-end">
-        <strong>Total {{ saving() ? "saving" : "cost" }}</strong>
+        <strong
+          >Total {{ saving() ? "saving" : "cost" }} @if (costReduction() > 0) {
+          ({{ costReduction() | percent }} reduction) }</strong
+        >
       </td>
       <td
         [ngClass]="{
@@ -62,6 +70,22 @@
         }"
       >
         <strong>{{ totalIncludingSupply() | currency : "AUD" }}</strong>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-end">
+        <strong>Total without Solar</strong>
+      </td>
+      <td
+        [ngClass]="{
+          'bg-success': saving(),
+          'bg-danger': !saving(),
+          'text-light': true
+        }"
+      >
+        <strong>{{
+          totalIncludingSupplyChargeWithoutSolar() | currency : "AUD"
+        }}</strong>
       </td>
     </tr>
   </tbody>

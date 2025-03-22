@@ -5,12 +5,20 @@ import {
   input,
   model,
 } from '@angular/core';
-import { ActewAGLElectricityCost } from '../../common/models/electricity.model';
-import { CurrencyPipe, DecimalPipe, CommonModule } from '@angular/common';
+import {
+  ActewAGLElectricityCost,
+  ActewAGLElectricityUsage,
+} from '../../common/models/electricity.model';
+import {
+  CurrencyPipe,
+  DecimalPipe,
+  CommonModule,
+  PercentPipe,
+} from '@angular/common';
 
 @Component({
   selector: 'app-actewagl-table-cost',
-  imports: [CurrencyPipe, DecimalPipe, CommonModule],
+  imports: [CurrencyPipe, DecimalPipe, PercentPipe, CommonModule],
   templateUrl: './actewagl-table-cost.component.html',
   styleUrl: './actewagl-table-cost.component.scss',
   standalone: true,
@@ -32,14 +40,35 @@ export class ActewaglTableCostComponent {
     )
   );
 
+  totalWithoutSolar = computed<number>(() =>
+    Math.abs(
+      this.listOfTotalActewAGLCost()
+        .filter((c) => c.usageType !== ActewAGLElectricityUsage.Solar)
+        .reduce((accumulator, currentValue) => {
+          return accumulator + currentValue.total;
+        }, 0)
+    )
+  );
+
   totalSupplyCharge = computed<number>(
     () =>
       this.numberOfDays() * this.supplyChargeRate() +
       this.numberOfDays() * this.supplyChargeRate() * this.supplyChargeRateGst()
   );
 
+  totalIncludingSupplyChargeWithoutSolar = computed<number>(
+    () => this.totalWithoutSolar() + this.totalSupplyCharge()
+  );
+
   totalIncludingSupply = computed<number>(
     () => this.total() + this.totalSupplyCharge()
+  );
+
+  costReduction = computed<number>(
+    () =>
+      (this.totalIncludingSupplyChargeWithoutSolar() -
+        this.totalIncludingSupply()) /
+      this.totalIncludingSupplyChargeWithoutSolar()
   );
 
   saving = computed<boolean>(() => {
