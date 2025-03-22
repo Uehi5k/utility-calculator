@@ -19,6 +19,8 @@ import { CurrencyPipe, DecimalPipe, CommonModule } from '@angular/common';
 export class ActewaglTableCostComponent {
   listOfTotalActewAGLCost = input<ActewAGLElectricityCost[]>([]);
   numberOfDays = input<number>(0);
+  fromDate = input<string>('');
+  toDate = input<string>('');
   supplyChargeRate = model<number>(1.01);
   supplyChargeRateGst = input<number>(0.1);
 

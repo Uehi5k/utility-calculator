@@ -20,14 +20,16 @@
 
 @if (numberOfDays > 0) {
 <hr />
-<h3>Total {{ numberOfDays }} @if (numberOfDays > 1) { days } @else { day }</h3>
-<p>
-  Period <strong>{{ fromDate }}</strong> to <strong>{{ toDate }}</strong>
-</p>
 <app-actewagl-table-cost
   [listOfTotalActewAGLCost]="listOfTotalActewAGLCost"
   [numberOfDays]="numberOfDays"
+  [fromDate]="fromDate"
+  [toDate]="toDate"
 ></app-actewagl-table-cost>
 
 <h3>Daily Breakdown</h3>
+<app-actewagl-daily-breakdown
+  [listOfTotalActewAGLCost]="listOfTotalActewAGLCost"
+>
+</app-actewagl-daily-breakdown>
 }
