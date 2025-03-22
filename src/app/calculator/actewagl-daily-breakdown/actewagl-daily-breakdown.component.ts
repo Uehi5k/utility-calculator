@@ -30,6 +30,10 @@ export class ActewaglDailyBreakdownComponent {
   ];
   tableData = computed<string[][]>(() => {
     const breakdowns: string[][] = [];
+    let totalPeakQuantity = 0;
+    let totalShoulderQuantity = 0;
+    let totalOffpeakQuantity = 0;
+    let totalSolarQuantity = -0;
 
     // Add body data
     Object.keys(this.dateCostBreakdowns()).forEach((date) => {
@@ -53,7 +57,20 @@ export class ActewaglDailyBreakdownComponent {
         `${offpeakQuantity.toString()} kWh`,
         `${solarQuantity.toString()} kWh`,
       ]);
+
+      totalPeakQuantity += peakQuantity;
+      totalShoulderQuantity += shoulderQuantity;
+      totalOffpeakQuantity += offpeakQuantity;
+      totalSolarQuantity += solarQuantity;
     });
+
+    breakdowns.push([
+      'Total',
+      `${totalPeakQuantity.toString()} kWh`,
+      `${totalShoulderQuantity.toString()} kWh`,
+      `${totalOffpeakQuantity.toString()} kWh`,
+      `${totalSolarQuantity.toString()} kWh`,
+    ]);
 
     return breakdowns;
   });
