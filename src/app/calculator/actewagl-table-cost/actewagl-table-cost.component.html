@@ -19,7 +19,9 @@
     @if (totalSupplyCharge() > 0) {
     <tr>
       <td><strong>Daily Supply Charge</strong></td>
-      <td>{{ supplyChargeRate() | currency : "AUD" }}</td>
+      <td>
+        {{ supplyChargeRate() | currency : "AUD" }}
+      </td>
       <td>{{ numberOfDays() }} {{ numberOfDays() > 1 ? "days" : "day" }}</td>
       <td>
         {{
@@ -36,6 +38,7 @@
     <tr>
       <td>
         <strong>{{ actewAGLCost.usageType }}</strong>
+        <br />{{ actewAGLCost.hours }}
       </td>
       <td>
         <div class="input-group input-group-sm rate-input">

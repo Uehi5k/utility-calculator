@@ -11,6 +11,7 @@ export interface ActewAGLElectricityCost {
   quantity: number;
   gst: number;
   total: number;
+  hours: string;
 }
 
 /**
@@ -26,6 +27,7 @@ export const getDefaultActewAGLElectricityCostList =
         quantity: 0,
         gst: 0.1,
         total: 0,
+        hours: '7am-9am and 5pm-8pm daily',
       },
       {
         usageType: ActewAGLElectricityUsage.Shoulder,
@@ -33,6 +35,7 @@ export const getDefaultActewAGLElectricityCostList =
         quantity: 0,
         gst: 0.1,
         total: 0,
+        hours: '9am-5pm and 8pm-10pm daily',
       },
       {
         usageType: ActewAGLElectricityUsage.Offpeak,
@@ -40,6 +43,7 @@ export const getDefaultActewAGLElectricityCostList =
         quantity: 0,
         gst: 0.1,
         total: 0,
+        hours: 'All other times (10pm - 7am)',
       },
       {
         usageType: ActewAGLElectricityUsage.Solar,
@@ -47,6 +51,7 @@ export const getDefaultActewAGLElectricityCostList =
         quantity: 0,
         gst: 0,
         total: 0,
+        hours: '',
       },
     ];
   };
