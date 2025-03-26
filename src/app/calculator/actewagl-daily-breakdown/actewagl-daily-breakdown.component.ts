@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,7 +13,7 @@ import { roundingFloatIssue } from '../../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-actewagl-daily-breakdown',
-  imports: [CommonModule],
+  imports: [CommonModule, DecimalPipe],
   templateUrl: './actewagl-daily-breakdown.component.html',
   styleUrl: './actewagl-daily-breakdown.component.scss',
   standalone: true,
@@ -21,6 +21,7 @@ import { roundingFloatIssue } from '../../common/utils/calculation.utils';
 })
 export class ActewaglDailyBreakdownComponent {
   dateCostBreakdowns = input<Record<string, ActewAGLElectricityCost[]>>({});
+  totalQuantity = 0;
 
   tableHeaders = [
     'Date',
@@ -32,6 +33,7 @@ export class ActewaglDailyBreakdownComponent {
   ];
   tableData = computed<string[][]>(() => {
     const breakdowns: string[][] = [];
+    this.totalQuantity = 0;
     let totalPeakQuantity = 0;
     let totalShoulderQuantity = 0;
     let totalOffpeakQuantity = 0;
@@ -60,10 +62,10 @@ export class ActewaglDailyBreakdownComponent {
 
       breakdowns.push([
         date,
-        `${peakQuantity.toString()} kWh`,
-        `${shoulderQuantity.toString()} kWh`,
-        `${offpeakQuantity.toString()} kWh`,
-        `${solarQuantity.toString()} kWh`,
+        `${roundingFloatIssue(peakQuantity).toString()} kWh`,
+        `${roundingFloatIssue(shoulderQuantity).toString()} kWh`,
+        `${roundingFloatIssue(offpeakQuantity).toString()} kWh`,
+        `${roundingFloatIssue(solarQuantity).toString()} kWh`,
         totalCost.toLocaleString('en-US', {
           style: 'currency',
           currency: 'AUD',
@@ -85,6 +87,9 @@ export class ActewaglDailyBreakdownComponent {
       `${roundingFloatIssue(totalSolarQuantity).toString()} kWh`,
       finalCost.toLocaleString('en-US', { style: 'currency', currency: 'AUD' }),
     ]);
+
+    this.totalQuantity =
+      totalOffpeakQuantity + totalPeakQuantity + totalShoulderQuantity;
 
     return breakdowns;
   });
