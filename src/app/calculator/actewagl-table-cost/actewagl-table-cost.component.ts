@@ -35,21 +35,17 @@ export class ActewaglTableCostComponent {
   supplyChargeRateGst = input<number>(0.1);
 
   total = computed<number>(() =>
-    Math.abs(
-      this.listOfTotalActewAGLCost().reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.total;
-      }, 0)
-    )
+    this.listOfTotalActewAGLCost().reduce((accumulator, currentValue) => {
+      return accumulator + currentValue.total;
+    }, 0)
   );
 
   totalWithoutSolar = computed<number>(() =>
-    Math.abs(
-      this.listOfTotalActewAGLCost()
-        .filter((c) => c.usageType !== ActewAGLElectricityUsage.Solar)
-        .reduce((accumulator, currentValue) => {
-          return accumulator + currentValue.total;
-        }, 0)
-    )
+    this.listOfTotalActewAGLCost()
+      .filter((c) => c.usageType !== ActewAGLElectricityUsage.Solar)
+      .reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.total;
+      }, 0)
   );
 
   totalSupplyCharge = computed<number>(
