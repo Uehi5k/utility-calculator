@@ -38,7 +38,6 @@ export class ActewaglDailyBreakdownComponent {
     let totalSolarQuantity = 0;
     let finalCost = 0;
 
-    console.log(this.dateCostBreakdowns());
     // Add body data
     Object.keys(this.dateCostBreakdowns()).forEach((date) => {
       const cost = this.dateCostBreakdowns()[date];
