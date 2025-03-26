@@ -95,12 +95,8 @@ export class CalculatorComponent implements OnInit {
       }
     }
 
-    // Rounding quantity and total
-    Object.keys(this.dateCostBreakdowns).forEach((date) => {
-      this.dateCostBreakdowns[date].forEach((usage) => {
-        usage.quantity = roundingFloatIssue(usage.quantity);
-        usage.total = roundingFloatIssue(usage.total);
-      });
+    this.listOfTotalActewAGLCost.forEach((cost) => {
+      cost.quantity = roundingFloatIssue(cost.quantity);
     });
 
     // Get from and end dates
