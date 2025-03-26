@@ -1,6 +1,13 @@
-# UtilityCalculator
+# Utility Calculator
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+This web-based application calculator is a simple web app that helps calculating approximately value of your electricity usage in Actew AGL.
+The goal of this app is to give an indication how much you would have saved with the solar system in a period of time. If you have a loan, and want to know if the solar system is worth it, this might be the tool for it.
+
+I build this web application as a way to remember how to practice using new Angular features like Signal.
+
+## TODO List
+- Add a way to temporarily save the results locally on browser.
+- Add a clock to determine if the current time is Peak, Shoulder or Off-peak.
 
 ## Development server
 
