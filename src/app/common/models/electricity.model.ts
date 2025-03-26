@@ -39,20 +39,20 @@ export const getDefaultActewAGLElectricityCostList =
         hours: '9am-5pm and 8pm-10pm daily',
       },
       {
-        usageType: ActewAGLElectricityUsage.SelfConsumption,
-        rate: 0.21,
-        quantity: 0,
-        gst: 0.1,
-        total: 0,
-        hours: 'Self-usage from Solar during daytime (Shoulder charge)',
-      },
-      {
         usageType: ActewAGLElectricityUsage.Offpeak,
         rate: 0.170591,
         quantity: 0,
         gst: 0.1,
         total: 0,
         hours: 'All other times (10pm - 7am)',
+      },
+      {
+        usageType: ActewAGLElectricityUsage.SelfConsumption,
+        rate: -0.21,
+        quantity: 0,
+        gst: 0.1,
+        total: 0,
+        hours: 'Self-usage from Solar during daytime (Shoulder charge)',
       },
       {
         usageType: ActewAGLElectricityUsage.Solar,
