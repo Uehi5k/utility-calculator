@@ -2,6 +2,7 @@ export enum ActewAGLElectricityUsage {
   Solar = 'Solar',
   Offpeak = 'Offpeak',
   Shoulder = 'Shoulder',
+  SelfConsumption = 'Self Consumption',
   Peak = 'Peak',
 }
 
@@ -36,6 +37,14 @@ export const getDefaultActewAGLElectricityCostList =
         gst: 0.1,
         total: 0,
         hours: '9am-5pm and 8pm-10pm daily',
+      },
+      {
+        usageType: ActewAGLElectricityUsage.SelfConsumption,
+        rate: 0.21,
+        quantity: 0,
+        gst: 0.1,
+        total: 0,
+        hours: 'Self-usage from Solar during daytime (Shoulder charge)',
       },
       {
         usageType: ActewAGLElectricityUsage.Offpeak,
