@@ -9,18 +9,13 @@ import {
   ActewAGLElectricityCost,
   ActewAGLElectricityUsage,
 } from '../../common/models/electricity.model';
-import {
-  CurrencyPipe,
-  DecimalPipe,
-  CommonModule,
-  PercentPipe,
-} from '@angular/common';
+import { CurrencyPipe, CommonModule, PercentPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { calculateActewAGLElectricityCostTotal } from '../../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-actewagl-table-cost',
-  imports: [CurrencyPipe, DecimalPipe, PercentPipe, CommonModule, FormsModule],
+  imports: [CurrencyPipe, PercentPipe, CommonModule, FormsModule],
   templateUrl: './actewagl-table-cost.component.html',
   styleUrl: './actewagl-table-cost.component.scss',
   standalone: true,
@@ -35,15 +30,23 @@ export class ActewaglTableCostComponent {
   supplyChargeRateGst = input<number>(0.1);
 
   total = computed<number>(() =>
-    this.listOfTotalActewAGLCost().reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.total;
-    }, 0)
+    this.listOfTotalActewAGLCost()
+      .filter((c) => c.usageType !== ActewAGLElectricityUsage.SelfConsumption)
+      .reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.total;
+      }, 0)
   );
 
-  totalWithoutSolar = computed<number>(() =>
+  totalWithoutSolarSystem = computed<number>(() =>
     this.listOfTotalActewAGLCost()
       .filter((c) => c.usageType !== ActewAGLElectricityUsage.Solar)
       .reduce((accumulator, currentValue) => {
+        // Self Consumption case, we would expect the saving, and add the negative back to the total
+        if (
+          currentValue.usageType === ActewAGLElectricityUsage.SelfConsumption
+        ) {
+          return accumulator - currentValue.total;
+        }
         return accumulator + currentValue.total;
       }, 0)
   );
@@ -54,9 +57,9 @@ export class ActewaglTableCostComponent {
       this.numberOfDays() * this.supplyChargeRate() * this.supplyChargeRateGst()
   );
 
-  totalIncludingSupplyChargeWithoutSolar = computed<number>(
-    () => this.totalWithoutSolar() + this.totalSupplyCharge()
-  );
+  totalIncludingSupplyChargeWithoutSolarSystem = computed<number>(() => {
+    return this.totalWithoutSolarSystem() + this.totalSupplyCharge();
+  });
 
   totalIncludingSupply = computed<number>(
     () => this.total() + this.totalSupplyCharge()
@@ -64,14 +67,10 @@ export class ActewaglTableCostComponent {
 
   costReduction = computed<number>(
     () =>
-      (this.totalIncludingSupplyChargeWithoutSolar() -
+      (this.totalIncludingSupplyChargeWithoutSolarSystem() -
         this.totalIncludingSupply()) /
-      this.totalIncludingSupplyChargeWithoutSolar()
+      this.totalIncludingSupplyChargeWithoutSolarSystem()
   );
-
-  saving = computed<boolean>(() => {
-    return this.totalIncludingSupply() < 0;
-  });
 
   /**
    * Update usage type rate
@@ -88,6 +87,28 @@ export class ActewaglTableCostComponent {
       );
       if (cost) {
         cost.rate = newRate;
+        cost.total = calculateActewAGLElectricityCostTotal(cost);
+      }
+
+      return [...list];
+    });
+  }
+
+  /**
+   * Update usage type quantity
+   * @param actewAGLElectricityCost (ActewAGLElectricityCost)
+   * @param newQuantity (number)
+   */
+  updateUsageTypeQuantity(
+    actewAGLElectricityCost: ActewAGLElectricityCost,
+    newQuantity: number
+  ) {
+    this.listOfTotalActewAGLCost.update((list) => {
+      const cost = list.find(
+        (l) => l.usageType === actewAGLElectricityCost.usageType
+      );
+      if (cost) {
+        cost.quantity = newQuantity;
         cost.total = calculateActewAGLElectricityCostTotal(cost);
       }
 

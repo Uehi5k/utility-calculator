@@ -4,6 +4,24 @@
 <p>
   Period <strong>{{ fromDate() }}</strong> to <strong>{{ toDate() }}</strong>
 </p>
+<div class="alert alert-info">
+  <p>
+    For <strong>Self Consumption</strong> - typically this is the amount of
+    usage from Solar during daytime, and normally Solar starts generating power
+    around 9am, I assume the rate will be the same as
+    <strong>Shoulder</strong> type. Though, the input is allowed to be modified
+    so feel free to fill in the data required.
+  </p>
+  <p>
+    We will use info about Self Consumption and treated as if it's from the Grid
+    to know how much you have saved in regard of Solar export.
+  </p>
+  <p>
+    <strong>How to know Self Consumption</strong> - if you are using an app to
+    track your Solar usage, you can select which periods and see how much you
+    use during that period of time.
+  </p>
+</div>
 
 <table class="table table-striped">
   <thead>
@@ -41,7 +59,7 @@
         <br />{{ actewAGLCost.hours }}
       </td>
       <td>
-        <div class="input-group input-group-sm rate-input">
+        <div class="input-group input-group-sm number-input">
           <span
             class="input-group-text"
             [id]="'rate-usage' + actewAGLCost.usageType"
@@ -57,7 +75,23 @@
           />
         </div>
       </td>
-      <td>{{ actewAGLCost.quantity | number : "1.2-2" }} kWh</td>
+      <td>
+        <div class="input-group input-group-sm number-input">
+          <input
+            type="number"
+            class="form-control"
+            aria-label="Quantity"
+            [attr.aria-describedby]="'quantity-usage' + actewAGLCost.usageType"
+            [ngModel]="actewAGLCost.quantity"
+            (ngModelChange)="updateUsageTypeQuantity(actewAGLCost, $event)"
+          />
+          <span
+            class="input-group-text"
+            [id]="'quantity-usage' + actewAGLCost.usageType"
+            >kWh</span
+          >
+        </div>
+      </td>
       <td>
         {{
           actewAGLCost.gst * actewAGLCost.rate * actewAGLCost.quantity
@@ -77,14 +111,18 @@
     <tr>
       <td colspan="4" class="text-end">
         <strong
-          >Total {{ saving() ? "saving" : "cost" }} @if (costReduction() > 0) {
-          ({{ costReduction() | percent }} reduction) }</strong
+          >Total
+          {{ totalIncludingSupply() < 0 ? "saving" : "cost" }}
+          @if (costReduction() > 0) { ({{
+            costReduction() | percent
+          }}
+          reduction) }</strong
         >
       </td>
       <td
         [ngClass]="{
-          'bg-success': saving(),
-          'bg-danger': !saving(),
+          'bg-success': totalIncludingSupply() < 0,
+          'bg-danger': totalIncludingSupply() > 0,
           'text-light': true
         }"
       >
@@ -93,17 +131,17 @@
     </tr>
     <tr>
       <td colspan="4" class="text-end">
-        <strong>Total without Solar</strong>
+        <strong>Total without Solar System</strong>
       </td>
       <td
         [ngClass]="{
-          'bg-success': saving(),
-          'bg-danger': !saving(),
+          'bg-success': totalIncludingSupplyChargeWithoutSolarSystem() < 0,
+          'bg-danger': totalIncludingSupplyChargeWithoutSolarSystem() > 0,
           'text-light': true
         }"
       >
         <strong>{{
-          totalIncludingSupplyChargeWithoutSolar() | currency : "AUD"
+          totalIncludingSupplyChargeWithoutSolarSystem() | currency : "AUD"
         }}</strong>
       </td>
     </tr>
