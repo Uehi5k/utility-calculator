@@ -1,3 +1,9 @@
 .number-input {
   width: 150px;
 }
+
+@media (max-width: 767.98px) {
+  .number-input {
+    width: 100px;
+  }
+}

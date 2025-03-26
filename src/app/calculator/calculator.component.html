@@ -21,11 +21,17 @@
 @if (numberOfDays > 0) {
 <hr />
 <app-actewagl-table-cost
-  [listOfTotalActewAGLCost]="listOfTotalActewAGLCost"
+  [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
   [numberOfDays]="numberOfDays"
   [fromDate]="fromDate"
   [toDate]="toDate"
 ></app-actewagl-table-cost>
+
+<app-loan-roi-calculator
+  [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
+  [numberOfDays]="numberOfDays"
+  [dailyLoanCost]="3.14"
+></app-loan-roi-calculator>
 
 <app-actewagl-daily-breakdown [dateCostBreakdowns]="dateCostBreakdowns">
 </app-actewagl-daily-breakdown>

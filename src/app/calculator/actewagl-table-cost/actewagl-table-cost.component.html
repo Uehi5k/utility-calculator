@@ -23,7 +23,7 @@
   </p>
 </div>
 
-<table class="table table-striped">
+<table class="table table-striped table-responsive">
   <thead>
     <tr>
       <th scope="col">Usage Type</th>
@@ -121,7 +121,7 @@
       </td>
       <td
         [ngClass]="{
-          'bg-success': totalIncludingSupply() < 0,
+          'bg-success': totalIncludingSupply() <= 0,
           'bg-danger': totalIncludingSupply() > 0,
           'text-light': true
         }"
@@ -135,7 +135,7 @@
       </td>
       <td
         [ngClass]="{
-          'bg-success': totalIncludingSupplyChargeWithoutSolarSystem() < 0,
+          'bg-success': totalIncludingSupplyChargeWithoutSolarSystem() <= 0,
           'bg-danger': totalIncludingSupplyChargeWithoutSolarSystem() > 0,
           'text-light': true
         }"

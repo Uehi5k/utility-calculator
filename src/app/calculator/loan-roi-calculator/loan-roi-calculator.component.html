@@ -1,0 +1,111 @@
+<h3>Loan Return of Investment Calculator</h3>
+<div class="alert alert-info">
+  <p>
+    This calculation will be based on the daily export of the solar system to
+    the grid, and self-consumption. <strong>Without self-consumption</strong>,
+    we will not see a lot of benefit when it comes to Return of Investment.
+    Maximise your self-consumption if possible.
+  </p>
+  <p>
+    Benefits of the solar system can be varied depending on the usage, some
+    examples can be found below:
+  </p>
+  <ul>
+    <li>Working from home.</li>
+    <li>Cooking or meal prep during daytime.</li>
+    <li>Doing laundry during daytime.</li>
+  </ul>
+</div>
+
+@if(solarUsage() !== undefined || selfConsumptionUsage() !== undefined) {
+
+<div class="mb-3">
+  <label for="fornightly-loan-amount" class="form-label"
+    >Fornightly Loan Amount</label
+  >
+  <div class="input-group">
+    <span class="input-group-text" id="fornightly-loan-amount-icon">A$</span>
+    <input
+      type="number"
+      class="form-control"
+      id="fornightly-loan-amount"
+      aria-describedby="fornightly-loan-amount-icon"
+      [(ngModel)]="loanAmountPerFortnight"
+    />
+    <span class="input-group-text">
+      / 14 = <strong>{{ dailyLoanCost() | currency : "AUD" }}</strong></span
+    >
+  </div>
+</div>
+
+<table class="table table-striped table-responsive">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price Per Unit</th>
+      <th scope="col">Total Price</th>
+      <th scope="col">Daily Average</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Solar (kWh)</strong></td>
+      <td>{{ solarUsage()?.quantity }} kWh</td>
+      <td>{{ solarUsage()?.rate | currency : "AUD" }}</td>
+      <td>{{ solarUsage()?.total | currency : "AUD" }}</td>
+      <td>
+        {{ (solarUsage()?.total ?? 0) / numberOfDays() | currency : "AUD" }}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Self Consumption</strong></td>
+      <td>{{ selfConsumptionUsage()?.quantity }} kWh</td>
+      <td>{{ selfConsumptionUsage()?.rate | currency : "AUD" }}</td>
+      <td>{{ selfConsumptionUsage()?.total | currency : "AUD" }}</td>
+      <td>
+        {{
+          (selfConsumptionUsage()?.total ?? 0) / numberOfDays()
+            | currency : "AUD"
+        }}
+      </td>
+    </tr>
+
+    <tr>
+      <td><strong>Loan (days)</strong></td>
+      <td colspan="2">{{ numberOfDays() }} days</td>
+      <td>{{ numberOfDays() * dailyLoanCost() | currency : "AUD" }}</td>
+      <td>
+        {{ dailyLoanCost() | currency : "AUD" }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong
+          >Result - Net
+          {{ resultDailyAverage() > 0 ? "Negative" : "Positive" }}</strong
+        >
+      </td>
+      <td colspan="2"></td>
+      <td
+        [ngClass]="{
+          'bg-success': resultTotalPrice() <= 0,
+          'bg-danger': resultTotalPrice() > 0,
+          'text-light': true
+        }"
+      >
+        {{ resultTotalPrice() | currency : "AUD" }}
+      </td>
+      <td
+        [ngClass]="{
+          'bg-success': resultDailyAverage() <= 0,
+          'bg-danger': resultDailyAverage() > 0,
+          'text-light': true
+        }"
+      >
+        {{ resultDailyAverage() | currency : "AUD" }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+}
