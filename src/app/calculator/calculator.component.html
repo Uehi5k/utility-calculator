@@ -22,7 +22,13 @@
 
 @if (numberOfDays > 0) {
 
-<ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs nav-fill">
+<ul
+  ngbNav
+  #nav="ngbNav"
+  [(activeId)]="activeTab"
+  [destroyOnHide]="false"
+  class="nav-tabs nav-fill"
+>
   <li [ngbNavItem]="1">
     <button ngbNavLink>Usage</button>
     <ng-template ngbNavContent>

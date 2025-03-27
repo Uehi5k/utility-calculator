@@ -8,7 +8,6 @@ I build this web application as a way to remember how to practice using new Angu
 ## TODO List
 - Add a way to temporarily save the results locally on browser.
 - Add a clock to determine if the current time is Peak, Shoulder or Off-peak.
-- Add feature to edit Daily Supply Charge rate.
 - Add a graph to view the daily usage.
 
 ## Development server

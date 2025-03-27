@@ -34,11 +34,19 @@
     </tr>
   </thead>
   <tbody>
-    @if (totalSupplyCharge() > 0) {
     <tr>
       <td><strong>Daily Supply Charge</strong></td>
       <td>
-        {{ supplyChargeRate() | currency : "AUD" }}
+        <div class="input-group input-group-sm number-input">
+          <span class="input-group-text" id="supply-charge-rate-icon">A$</span>
+          <input
+            type="number"
+            class="form-control"
+            aria-label="Rate"
+            aria-describedby="supply-charge-rate-icon"
+            [(ngModel)]="supplyChargeRate"
+          />
+        </div>
       </td>
       <td>{{ numberOfDays() }} {{ numberOfDays() > 1 ? "days" : "day" }}</td>
       <td>
@@ -51,7 +59,7 @@
         {{ totalSupplyCharge() | currency : "AUD" }}
       </td>
     </tr>
-    } @for (actewAGLCost of listOfTotalActewAGLCost(); track
+    @for (actewAGLCost of listOfTotalActewAGLCost(); track
     actewAGLCost.usageType) {
     <tr>
       <td>
