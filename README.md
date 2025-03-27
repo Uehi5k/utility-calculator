@@ -10,7 +10,6 @@ I build this web application as a way to remember how to practice using new Angu
 - Add a clock to determine if the current time is Peak, Shoulder or Off-peak.
 - Add feature to edit Daily Supply Charge rate.
 - Add a graph to view the daily usage.
-- Add tab navigation, don't scroll too much.
 
 ## Development server
 

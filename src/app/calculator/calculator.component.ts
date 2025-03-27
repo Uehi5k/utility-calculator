@@ -17,19 +17,21 @@ import {
   roundingFloatIssue,
 } from '../common/utils/calculation.utils';
 import { LoanRoiCalculatorComponent } from './loan-roi-calculator/loan-roi-calculator.component';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-calculator',
   imports: [
     CommonModule,
     FormsModule,
+    NgbNavModule,
     ExcelUploadComponent,
     ActewaglTableCostComponent,
     ActewaglDailyBreakdownComponent,
     LoanRoiCalculatorComponent,
   ],
   templateUrl: './calculator.component.html',
-  styleUrl: './calculator.component.sass',
+  styleUrl: './calculator.component.scss',
   standalone: true,
 })
 export class CalculatorComponent implements OnInit {
@@ -39,6 +41,7 @@ export class CalculatorComponent implements OnInit {
   numberOfDays = 0;
   fromDate = '';
   toDate = '';
+  activeTab = 1;
 
   ngOnInit() {
     this.resetCost();

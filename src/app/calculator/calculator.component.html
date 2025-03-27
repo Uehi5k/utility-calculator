@@ -18,20 +18,45 @@
   (fileSubmission)="calculateElectricityBill($event)"
 ></app-excel-upload>
 
-@if (numberOfDays > 0) {
 <hr />
-<app-actewagl-table-cost
-  [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
-  [numberOfDays]="numberOfDays"
-  [fromDate]="fromDate"
-  [toDate]="toDate"
-></app-actewagl-table-cost>
 
-<app-loan-roi-calculator
-  [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
-  [numberOfDays]="numberOfDays"
-></app-loan-roi-calculator>
+@if (numberOfDays > 0) {
 
-<app-actewagl-daily-breakdown [dateCostBreakdowns]="dateCostBreakdowns">
-</app-actewagl-daily-breakdown>
+<ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs nav-fill">
+  <li [ngbNavItem]="1">
+    <button ngbNavLink>Usage</button>
+    <ng-template ngbNavContent>
+      <div class="tab-container">
+        <app-actewagl-table-cost
+          [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
+          [numberOfDays]="numberOfDays"
+          [fromDate]="fromDate"
+          [toDate]="toDate"
+        ></app-actewagl-table-cost>
+      </div>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="2">
+    <button ngbNavLink>Breakdown</button>
+    <ng-template ngbNavContent>
+      <div class="tab-container">
+        <app-actewagl-daily-breakdown [dateCostBreakdowns]="dateCostBreakdowns">
+        </app-actewagl-daily-breakdown>
+      </div>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="3">
+    <button ngbNavLink>Loan ROI</button>
+    <ng-template ngbNavContent>
+      <div class="tab-container">
+        <app-loan-roi-calculator
+          [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
+          [numberOfDays]="numberOfDays"
+        ></app-loan-roi-calculator>
+      </div>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
 }
