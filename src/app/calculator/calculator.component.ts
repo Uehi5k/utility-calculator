@@ -37,6 +37,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 export class CalculatorComponent implements OnInit {
   private electricityCalculationService = inject(ElectricityCalculationService);
   listOfTotalActewAGLCost = signal<ActewAGLElectricityCost[]>([]);
+  duplicatedData = signal<ActewAGLElectricityCost[][]>([]);
   dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]> = {};
   numberOfDays = 0;
   fromDate = '';
@@ -53,6 +54,20 @@ export class CalculatorComponent implements OnInit {
   resetCost() {
     this.listOfTotalActewAGLCost.set(getDefaultActewAGLElectricityCostList());
     this.dateCostBreakdowns = {};
+  }
+
+  /**
+   * Update cost
+   * @param cost (ActewAGLElectricityCost)
+   */
+  updateCost(cost: ActewAGLElectricityCost) {
+    this.listOfTotalActewAGLCost.update((l) => {
+      let foundCost = l.find((c) => c.usageType === cost.usageType);
+      if (foundCost) {
+        foundCost = { ...cost };
+      }
+      return [...l];
+    });
   }
 
   /**
@@ -77,9 +92,16 @@ export class CalculatorComponent implements OnInit {
       const quantity = Number.parseFloat(
         data.data[i][headerIndices[2].arrayIndex]
       );
-      const cost = this.listOfTotalActewAGLCost().find(
-        (l) => l.usageType === usageType
-      );
+
+      this.listOfTotalActewAGLCost.update((l) => {
+        const cost = l.find((each) => each.usageType === usageType);
+        if (cost) {
+          cost.quantity += isNaN(quantity) ? 0 : quantity;
+          cost.total = calculateActewAGLElectricityCostTotal(cost);
+        }
+        return [...l];
+      });
+
       // Check if we have any date in the breakdowns
       if (!this.dateCostBreakdowns[date]) {
         this.dateCostBreakdowns[date] = getDefaultActewAGLElectricityCostList();
@@ -88,12 +110,6 @@ export class CalculatorComponent implements OnInit {
         (l) => l.usageType === usageType
       );
 
-      if (cost) {
-        cost.quantity += isNaN(quantity) ? 0 : quantity;
-        cost.total = calculateActewAGLElectricityCostTotal(cost);
-        this.updateCost(cost);
-      }
-
       if (costbreakdown) {
         costbreakdown.quantity += isNaN(quantity) ? 0 : quantity;
         costbreakdown.total =
@@ -101,9 +117,12 @@ export class CalculatorComponent implements OnInit {
       }
     }
 
-    this.listOfTotalActewAGLCost().forEach((cost) => {
-      cost.quantity = roundingFloatIssue(cost.quantity);
-      this.updateCost(cost);
+    // Update floating issue when summing floating numbers together
+    this.listOfTotalActewAGLCost.update((l) => {
+      l.forEach((cost) => {
+        cost.quantity = roundingFloatIssue(cost.quantity);
+      });
+      return [...l];
     });
 
     // Get from and end dates
@@ -115,15 +134,5 @@ export class CalculatorComponent implements OnInit {
 
     // Get number of days in the spreadsheet
     this.numberOfDays = Object.keys(this.dateCostBreakdowns).length;
-  }
-
-  updateCost(cost: ActewAGLElectricityCost) {
-    this.listOfTotalActewAGLCost.update((l) => {
-      let foundCost = l.find((c) => c.usageType === cost.usageType);
-      if (foundCost) {
-        foundCost = { ...cost };
-      }
-      return [...l];
-    });
   }
 }
