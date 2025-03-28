@@ -45,6 +45,7 @@ export class CalculatorComponent implements OnInit {
   listOfTotalActewAGLCost = signal<ActewAGLElectricityCost[]>([]);
   duplicatedData: Record<string, WritableSignal<ActewAGLElectricityCost[]>> =
     {};
+  newHeading = '';
   dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]> = {};
   numberOfDays = 0;
   fromDate = '';
@@ -81,9 +82,16 @@ export class CalculatorComponent implements OnInit {
    * Duplicate table cost, to be used as comparison between different adjustments
    */
   duplicateTableCost() {
-    const keys = Object.keys(this.duplicatedData);
-    const newKey = `Duplicated data - ${keys.length + 1}`;
-    this.duplicatedData[newKey] = signal(this.listOfTotalActewAGLCost() ?? []);
+    if (this.newHeading.trim().length === 0) {
+      alert('Please enter heading for the new table');
+    } else {
+      const keys = Object.keys(this.duplicatedData);
+      const newKey = this.newHeading;
+      this.duplicatedData[newKey] = signal(
+        this.listOfTotalActewAGLCost() ?? []
+      );
+      this.newHeading = '';
+    }
   }
 
   /**

@@ -21,7 +21,6 @@
 <hr />
 
 @if (numberOfDays > 0) {
-
 <ul
   ngbNav
   #nav="ngbNav"
@@ -59,17 +58,33 @@
           [toDate]="toDate"
         ></app-actewagl-table-cost>
 
-        <div class="text-center">
-          <button class="btn btn-primary" (click)="duplicateTableCost()">
-            Duplicate Table
-          </button>
+        <div class="m-auto duplicate-section">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="new-heading"
+              placeholder="New heading"
+              aria-label="New heading"
+              aria-describedby="duplicate-table-cost-btn"
+              [(ngModel)]="newHeading"
+            />
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="duplicate-table-cost-btn"
+              (click)="duplicateTableCost()"
+            >
+              Duplicate Table
+            </button>
+          </div>
         </div>
 
         @for (actewAGLCost of duplicatedData | keyvalue; track $index) {
         <hr />
-        <p>{{ actewAGLCost.key }}</p>
         <app-actewagl-table-cost
           [(listOfTotalActewAGLCost)]="actewAGLCost.value"
+          [extraHeading]="actewAGLCost.key"
           [numberOfDays]="numberOfDays"
           [fromDate]="fromDate"
           [toDate]="toDate"

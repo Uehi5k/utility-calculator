@@ -1,5 +1,6 @@
 <h3>
   Total {{ numberOfDays() }} @if (numberOfDays() > 1) { days } @else { day }
+  {{ extraHeading().length > 0 ? ` - ${extraHeading()}` : "" }}
 </h3>
 <p>
   Period <strong>{{ fromDate() }}</strong> to <strong>{{ toDate() }}</strong>

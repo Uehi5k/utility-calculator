@@ -28,6 +28,7 @@ export class ActewaglTableCostComponent {
   toDate = input<string>('');
   supplyChargeRate = model<number>(1.01);
   supplyChargeRateGst = input<number>(0.1);
+  extraHeading = input<string>('');
 
   total = computed<number>(() =>
     this.listOfTotalActewAGLCost()
