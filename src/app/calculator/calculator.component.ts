@@ -1,4 +1,10 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ExcelUploadComponent } from '../common/components/excel-upload/excel-upload.component';
 import { ElectricityCalculationService } from '../core/services/electricity-calculation.service';
@@ -37,7 +43,8 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 export class CalculatorComponent implements OnInit {
   private electricityCalculationService = inject(ElectricityCalculationService);
   listOfTotalActewAGLCost = signal<ActewAGLElectricityCost[]>([]);
-  duplicatedData = signal<ActewAGLElectricityCost[][]>([]);
+  duplicatedData: Record<string, WritableSignal<ActewAGLElectricityCost[]>> =
+    {};
   dateCostBreakdowns: Record<string, ActewAGLElectricityCost[]> = {};
   numberOfDays = 0;
   fromDate = '';
@@ -68,6 +75,15 @@ export class CalculatorComponent implements OnInit {
       }
       return [...l];
     });
+  }
+
+  /**
+   * Duplicate table cost, to be used as comparison between different adjustments
+   */
+  duplicateTableCost() {
+    const keys = Object.keys(this.duplicatedData);
+    const newKey = `Duplicated data - ${keys.length + 1}`;
+    this.duplicatedData[newKey] = signal(this.listOfTotalActewAGLCost() ?? []);
   }
 
   /**

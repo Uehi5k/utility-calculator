@@ -33,12 +33,48 @@
     <button ngbNavLink>Usage</button>
     <ng-template ngbNavContent>
       <div class="tab-container">
+        <div class="alert alert-info">
+          <p>
+            For <strong>Self Consumption</strong> - typically this is the amount
+            of usage from Solar during daytime, and normally Solar starts
+            generating power around 9am, I assume the rate will be the same as
+            <strong>Shoulder</strong> type. Though, the input is allowed to be
+            modified so feel free to fill in the data required.
+          </p>
+          <p>
+            We will use info about Self Consumption and treated as if it's from
+            the Grid to know how much you have saved in regard of Solar export.
+          </p>
+          <p>
+            <strong>How to know Self Consumption</strong> - if you are using an
+            app to track your Solar usage, you can select which periods and see
+            how much you use during that period of time.
+          </p>
+        </div>
+
         <app-actewagl-table-cost
           [(listOfTotalActewAGLCost)]="listOfTotalActewAGLCost"
           [numberOfDays]="numberOfDays"
           [fromDate]="fromDate"
           [toDate]="toDate"
         ></app-actewagl-table-cost>
+
+        <div class="text-center">
+          <button class="btn btn-primary" (click)="duplicateTableCost()">
+            Duplicate Table
+          </button>
+        </div>
+
+        @for (actewAGLCost of duplicatedData | keyvalue; track $index) {
+        <hr />
+        <p>{{ actewAGLCost.key }}</p>
+        <app-actewagl-table-cost
+          [(listOfTotalActewAGLCost)]="actewAGLCost.value"
+          [numberOfDays]="numberOfDays"
+          [fromDate]="fromDate"
+          [toDate]="toDate"
+        ></app-actewagl-table-cost>
+        }
       </div>
     </ng-template>
   </li>
