@@ -1,9 +1,7 @@
-<h3>
-  Total {{ numberOfDays() }} @if (numberOfDays() > 1) { days } @else { day }
-  {{ extraHeading().length > 0 ? ` - ${extraHeading()}` : "" }}
-</h3>
 <p>
-  Period <strong>{{ fromDate() }}</strong> to <strong>{{ toDate() }}</strong>
+  <strong
+    >{{ extraHeading().length > 0 ? `${extraHeading()}` : "" }} Table</strong
+  >
 </p>
 
 <table class="table table-striped table-responsive">
@@ -39,7 +37,7 @@
         }}
       </td>
       <td>
-        {{ totalSupplyCharge() | currency : "AUD" }}
+        <strong>{{ totalSupplyCharge() | currency : "AUD" }}</strong>
       </td>
     </tr>
     @for (actewAGLCost of listOfTotalActewAGLCost(); track
@@ -91,8 +89,8 @@
       </td>
       <td
         [ngClass]="{
-          'bg-success': actewAGLCost.total < 0,
-          'text-light': actewAGLCost.total < 0
+          'text-success': actewAGLCost.total < 0,
+          'fw-bold': true
         }"
       >
         {{ actewAGLCost.total | currency : "AUD" }}
@@ -112,9 +110,9 @@
       </td>
       <td
         [ngClass]="{
-          'bg-success': totalIncludingSupply() <= 0,
-          'bg-danger': totalIncludingSupply() > 0,
-          'text-light': true
+          'text-success': totalIncludingSupply() <= 0,
+          'text-danger': totalIncludingSupply() > 0,
+          'fw-bold': true
         }"
       >
         <strong>{{ totalIncludingSupply() | currency : "AUD" }}</strong>
@@ -126,9 +124,9 @@
       </td>
       <td
         [ngClass]="{
-          'bg-success': totalIncludingSupplyChargeWithoutSolarSystem() <= 0,
-          'bg-danger': totalIncludingSupplyChargeWithoutSolarSystem() > 0,
-          'text-light': true
+          'text-success': totalIncludingSupplyChargeWithoutSolarSystem() <= 0,
+          'text-danger': totalIncludingSupplyChargeWithoutSolarSystem() > 0,
+          'fw-bold': true
         }"
       >
         <strong>{{

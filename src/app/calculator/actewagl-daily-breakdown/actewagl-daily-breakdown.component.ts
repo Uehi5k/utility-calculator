@@ -29,7 +29,9 @@ export class ActewaglDailyBreakdownComponent {
     ActewAGLElectricityUsage.Shoulder,
     ActewAGLElectricityUsage.Offpeak,
     ActewAGLElectricityUsage.Solar,
-    'Cost',
+    'Cost w/o Solar',
+    'Solar Feed-In',
+    'Net',
   ];
   tableData = computed<string[][]>(() => {
     const breakdowns: string[][] = [];
@@ -38,7 +40,9 @@ export class ActewaglDailyBreakdownComponent {
     let totalShoulderQuantity = 0;
     let totalOffpeakQuantity = 0;
     let totalSolarQuantity = 0;
-    let finalCost = 0;
+    let finalCostWithoutSolar = 0;
+    let finalSolarReduction = 0;
+    let finalNet = 0;
 
     // Add body data
     Object.keys(this.dateCostBreakdowns()).forEach((date) => {
@@ -52,10 +56,19 @@ export class ActewaglDailyBreakdownComponent {
       const offpeakQuantity =
         cost.find((c) => c.usageType === ActewAGLElectricityUsage.Offpeak)
           ?.quantity ?? 0;
-      const solarQuantity =
-        cost.find((c) => c.usageType === ActewAGLElectricityUsage.Solar)
-          ?.quantity ?? 0;
-      const totalCost = cost.reduce((accumulator, currentValue) => {
+      const solarUsage = cost.find(
+        (c) => c.usageType === ActewAGLElectricityUsage.Solar
+      );
+      const solarQuantity = solarUsage?.quantity ?? 0;
+      const solarReduction = solarUsage?.total ?? 0;
+
+      const totalCostWithoutSolar = cost
+        .filter((c) => c.usageType !== ActewAGLElectricityUsage.Solar)
+        .reduce((accumulator, currentValue) => {
+          accumulator += currentValue.total;
+          return accumulator;
+        }, 0);
+      const net = cost.reduce((accumulator, currentValue) => {
         accumulator += currentValue.total;
         return accumulator;
       }, 0);
@@ -66,7 +79,15 @@ export class ActewaglDailyBreakdownComponent {
         `${roundingFloatIssue(shoulderQuantity).toString()} kWh`,
         `${roundingFloatIssue(offpeakQuantity).toString()} kWh`,
         `${roundingFloatIssue(solarQuantity).toString()} kWh`,
-        totalCost.toLocaleString('en-US', {
+        totalCostWithoutSolar.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'AUD',
+        }),
+        solarReduction.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'AUD',
+        }),
+        net.toLocaleString('en-US', {
           style: 'currency',
           currency: 'AUD',
         }),
@@ -76,7 +97,9 @@ export class ActewaglDailyBreakdownComponent {
       totalShoulderQuantity += shoulderQuantity;
       totalOffpeakQuantity += offpeakQuantity;
       totalSolarQuantity += solarQuantity;
-      finalCost += totalCost;
+      finalCostWithoutSolar += totalCostWithoutSolar;
+      finalSolarReduction += solarReduction;
+      finalNet += net;
     });
 
     breakdowns.push([
@@ -85,7 +108,15 @@ export class ActewaglDailyBreakdownComponent {
       `${roundingFloatIssue(totalShoulderQuantity).toString()} kWh`,
       `${roundingFloatIssue(totalOffpeakQuantity).toString()} kWh`,
       `${roundingFloatIssue(totalSolarQuantity).toString()} kWh`,
-      finalCost.toLocaleString('en-US', { style: 'currency', currency: 'AUD' }),
+      finalCostWithoutSolar.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'AUD',
+      }),
+      finalSolarReduction.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'AUD',
+      }),
+      finalNet.toLocaleString('en-US', { style: 'currency', currency: 'AUD' }),
     ]);
 
     this.totalQuantity =

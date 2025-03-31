@@ -89,18 +89,18 @@
       <td colspan="2"></td>
       <td
         [ngClass]="{
-          'bg-success': resultTotalPrice() <= 0,
-          'bg-danger': resultTotalPrice() > 0,
-          'text-light': true
+          'text-success': resultTotalPrice() <= 0,
+          'text-danger': resultTotalPrice() > 0,
+          'fw-bold': true
         }"
       >
         {{ resultTotalPrice() | currency : "AUD" }}
       </td>
       <td
         [ngClass]="{
-          'bg-success': resultDailyAverage() <= 0,
-          'bg-danger': resultDailyAverage() > 0,
-          'text-light': true
+          'text-success': resultDailyAverage() <= 0,
+          'text-danger': resultDailyAverage() > 0,
+          'fw-bold': true
         }"
       >
         {{ resultDailyAverage() | currency : "AUD" }}

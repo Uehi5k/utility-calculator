@@ -13,10 +13,11 @@
       @for (cell of row; track $index) {
       <td
         [ngClass]="{
-          'fw-bold': $index === 0,
-          'bg-success': $index === 5 && cell.indexOf('-') === 0,
-          'bg-danger': $index === 5 && cell.indexOf('-') === -1,
-          'text-light': $index === 5
+          'fw-bold': $index === 0 || $index === 5 || $index === 6 || $index === 7,
+          'text-success':
+            ($index === 6 || $index === 7) && cell.indexOf('-') === 0,
+          'text-danger':
+            ($index === 6 || $index === 7) && cell.indexOf('-') === -1,
         }"
       >
         {{ cell }}
@@ -25,11 +26,11 @@
     </tr>
     }
     <tr>
-      <td><strong>Total kWh consumption</strong></td>
+      <td><strong>Total consumption</strong></td>
       <td colspan="3" class="text-center">
         <strong>{{ totalQuantity | number : "1.2-2" }} kWh</strong>
       </td>
-      <td colspan="2"></td>
+      <td colspan="4"></td>
     </tr>
   </tbody>
 </table>

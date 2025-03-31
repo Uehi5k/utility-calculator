@@ -21,6 +21,11 @@
 <hr />
 
 @if (numberOfDays > 0) {
+<h3>Total {{ numberOfDays }} @if (numberOfDays > 1) { days } @else { day }</h3>
+<p>
+  Period <strong>{{ fromDate }}</strong> to <strong>{{ toDate }}</strong>
+</p>
+
 <ul
   ngbNav
   #nav="ngbNav"
