@@ -27,7 +27,7 @@
     <span class="input-group-text" id="fornightly-loan-amount-icon">A$</span>
     <input
       type="number"
-      class="form-control"
+      class="form-control input-amount-length"
       id="fornightly-loan-amount"
       aria-describedby="fornightly-loan-amount-icon"
       [(ngModel)]="loanAmountPerFortnight"
@@ -38,13 +38,30 @@
   </div>
 </div>
 
+<div class="mb-3">
+  <label for="rent-income-amount" class="form-label">Rent Income Amount</label>
+  <div class="input-group">
+    <span class="input-group-text" id="rent-income-amount-icon">A$</span>
+    <input
+      type="number"
+      class="form-control input-amount-length"
+      id="rent-income-amount"
+      aria-describedby="rent-income-amount-icon"
+      [(ngModel)]="rentIncomePerFortnight"
+    />
+    <span class="input-group-text">
+      / 14 = <strong>{{ dailyRentIncome() | currency : "AUD" }}</strong></span
+    >
+  </div>
+</div>
+
 <table class="table table-striped table-responsive">
   <thead>
     <tr>
       <th scope="col"></th>
       <th scope="col">Quantity</th>
       <th scope="col">Price Per Unit</th>
-      <th scope="col">Total Price</th>
+      <th scope="col">Total</th>
       <th scope="col">Daily Average</th>
     </tr>
   </thead>
@@ -70,6 +87,16 @@
         }}
       </td>
     </tr>
+    @if (dailyRentIncome() < 0) {
+    <tr>
+      <td><strong>Rent Income (days)</strong></td>
+      <td colspan="2">{{ numberOfDays() }} days</td>
+      <td>{{ numberOfDays() * dailyRentIncome() | currency : "AUD" }}</td>
+      <td>
+        {{ dailyRentIncome() | currency : "AUD" }}
+      </td>
+    </tr>
+    }
 
     <tr>
       <td><strong>Loan (days)</strong></td>

@@ -24,8 +24,11 @@ export class LoanRoiCalculatorComponent {
   listOfTotalActewAGLCost = model<ActewAGLElectricityCost[]>([]);
   numberOfDays = input<number>(1);
   loanAmountPerFortnight = model<number>(44.05);
+  rentIncomePerFortnight = model<number>(0);
+  daysInFortnight = 14;
 
   dailyLoanCost = computed<number>(() => this.loanAmountPerFortnight() / 14);
+  dailyRentIncome = computed<number>(() => -this.rentIncomePerFortnight() / 14);
 
   solarUsage = computed<ActewAGLElectricityCost | undefined>(() =>
     this.listOfTotalActewAGLCost().find(
@@ -46,9 +49,14 @@ export class LoanRoiCalculatorComponent {
     const selfConsumptionUsage = this.listOfTotalActewAGLCost().find(
       (c) => c.usageType === ActewAGLElectricityUsage.SelfConsumption
     );
+    const rentIncome =
+      this.dailyRentIncome() < 0
+        ? this.numberOfDays() * this.dailyRentIncome()
+        : 0;
     return (
       (solarUsage?.total ?? 0) +
       (selfConsumptionUsage?.total ?? 0) +
+      rentIncome +
       this.numberOfDays() * this.dailyLoanCost()
     );
   });
