@@ -1,4 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-@use 'bootstrap/scss/bootstrap';
+@use "bootstrap/scss/bootstrap";
+
+.number-input {
+  width: 150px;
+}
+
+@media (max-width: 767.98px) {
+  .number-input {
+    width: 100px;
+  }
+}

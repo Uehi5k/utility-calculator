@@ -4,19 +4,23 @@
   the ActewAGL calculation. You can download your usage history file under your
   Electricity account.
 </p>
-<p>
-  <strong>Note: This app does not track your data uploaded.</strong> Here's the
-  columns needed for the calculation to work:
-</p>
-<ul>
-  <li>Register Description</li>
-  <li>Reading Date</li>
-  <li>Units</li>
-</ul>
-
-<app-excel-upload
-  (fileSubmission)="calculateElectricityBill($event)"
-></app-excel-upload>
+<p><strong>Note: This app does not track your data uploaded.</strong></p>
+<div class="row">
+  <div class="col-md-6">
+    <p>Here's the columns needed for the calculation to work:</p>
+    <ul>
+      <li>Register Description</li>
+      <li>Reading Date</li>
+      <li>Units</li>
+    </ul>
+    <app-excel-upload
+      (fileSubmission)="calculateElectricityBill($event)"
+    ></app-excel-upload>
+  </div>
+  <div class="col-md-6">
+    <app-usage-charge-setting></app-usage-charge-setting>
+  </div>
+</div>
 
 <hr />
 

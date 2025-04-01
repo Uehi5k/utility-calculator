@@ -11,7 +11,6 @@ import { ElectricityCalculationService } from '../core/services/electricity-calc
 import {
   ActewAGLElectricityCost,
   ActewAGLElectricityUsage,
-  getDefaultActewAGLElectricityCostList,
 } from '../common/models/electricity.model';
 import { ExcelData } from '../common/models/file-upload.model';
 import { getHeaderIndices } from '../common/utils/excel.utils';
@@ -24,6 +23,7 @@ import {
 } from '../common/utils/calculation.utils';
 import { LoanRoiCalculatorComponent } from './loan-roi-calculator/loan-roi-calculator.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { UsageChargeSettingComponent } from './usage-charge-setting/usage-charge-setting.component';
 
 @Component({
   selector: 'app-calculator',
@@ -35,6 +35,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
     ActewaglTableCostComponent,
     ActewaglDailyBreakdownComponent,
     LoanRoiCalculatorComponent,
+    UsageChargeSettingComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
@@ -53,14 +54,24 @@ export class CalculatorComponent implements OnInit {
   activeTab = 1;
 
   ngOnInit() {
+    this.checkSavedData();
     this.resetCost();
+  }
+
+  /**
+   * Check saved data
+   */
+  private checkSavedData() {
+    this.electricityCalculationService.checkSavedRate();
   }
 
   /**
    * Reset cost
    */
   resetCost() {
-    this.listOfTotalActewAGLCost.set(getDefaultActewAGLElectricityCostList());
+    this.listOfTotalActewAGLCost.set(
+      this.electricityCalculationService.generateActewAGLElectricityCostList()
+    );
     this.dateCostBreakdowns = {};
   }
 
@@ -128,7 +139,8 @@ export class CalculatorComponent implements OnInit {
 
       // Check if we have any date in the breakdowns
       if (!this.dateCostBreakdowns[date]) {
-        this.dateCostBreakdowns[date] = getDefaultActewAGLElectricityCostList();
+        this.dateCostBreakdowns[date] =
+          this.electricityCalculationService.generateActewAGLElectricityCostList();
       }
       const costbreakdown = this.dateCostBreakdowns[date].find(
         (l) => l.usageType === usageType
