@@ -7,6 +7,21 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td>Supply Charge</td>
+      <td>
+        <div class="input-group input-group-sm number-input">
+          <span class="input-group-text">A$</span>
+          <input
+            type="number"
+            class="form-control"
+            aria-label="Supply Charge"
+            [ngModel]="supplyChargeRateReadonly()"
+            (ngModelChange)="updateSupplyChargeRate($event)"
+          />
+        </div>
+      </td>
+    </tr>
     @for (actewAGLElectricityUsageRate of
     actewAGLElectricityUsageRateListReadOnly(); track
     actewAGLElectricityUsageRate.usageType) {

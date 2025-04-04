@@ -17,6 +17,9 @@ export class UsageChargeSettingComponent {
   actewAGLElectricityUsageRateListReadOnly =
     this.electricityCalculationService.actewAGLElectricityUsageRateList;
 
+  supplyChargeRateReadonly =
+    this.electricityCalculationService.supplyChargeRate;
+
   /**
    * Update usage rate
    * @param usageType (ActewAGLElectricityUsage)
@@ -24,6 +27,14 @@ export class UsageChargeSettingComponent {
    */
   updateUsageRate(usageType: ActewAGLElectricityUsage, newRate: number) {
     this.electricityCalculationService.updateUsageRate(usageType, newRate);
+  }
+
+  /**
+   * Update supply charge rate
+   * @param newRate (number)
+   */
+  updateSupplyChargeRate(newRate: number) {
+    this.electricityCalculationService.updateSupplyChargeRate(newRate);
   }
 
   /**

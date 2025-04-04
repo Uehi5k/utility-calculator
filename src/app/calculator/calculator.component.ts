@@ -44,6 +44,7 @@ import { UsageChargeSettingComponent } from './usage-charge-setting/usage-charge
 export class CalculatorComponent implements OnInit {
   private electricityCalculationService = inject(ElectricityCalculationService);
   listOfTotalActewAGLCost = signal<ActewAGLElectricityCost[]>([]);
+  supplyChargeRate = signal<number>(1.01);
   duplicatedData: Record<string, WritableSignal<ActewAGLElectricityCost[]>> =
     {};
   newHeading = '';
@@ -71,6 +72,9 @@ export class CalculatorComponent implements OnInit {
   resetCost() {
     this.listOfTotalActewAGLCost.set(
       this.electricityCalculationService.generateActewAGLElectricityCostList()
+    );
+    this.supplyChargeRate.set(
+      this.electricityCalculationService.supplyChargeRate()
     );
     this.dateCostBreakdowns = {};
   }

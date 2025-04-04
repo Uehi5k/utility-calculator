@@ -7,6 +7,7 @@ import {
   getDefaultActewAGLElectricityCostList,
   getDefaultActewAGLElectricityUsageRateList,
 } from '../../common/models/electricity.model';
+import { DEFAULT_SUPPLY_RATE } from '../../common/models/constant';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,11 @@ export class ElectricityCalculationService {
   readonly actewAGLElectricityUsageRateList =
     this.actewAGLElectricityUsageRateListSignal.asReadonly();
 
+  private supplyChargeRateSignal = signal<number>(DEFAULT_SUPPLY_RATE);
+  readonly supplyChargeRate = this.supplyChargeRateSignal.asReadonly();
+
   private rateListLocalStorageKey = 'actewRateList';
+  private supplyChargeRateStorageKey = 'supplyChargeRate';
 
   /**
    * Update usage rate
@@ -36,6 +41,14 @@ export class ElectricityCalculationService {
   }
 
   /**
+   * Update supply charge rate
+   * @param newRate (number) - new supply charge rate
+   */
+  updateSupplyChargeRate(newRate: number) {
+    this.supplyChargeRateSignal.update(() => newRate);
+  }
+
+  /**
    * Save rate to local storage for future usage
    */
   saveRateToLocalStorage() {
@@ -43,10 +56,18 @@ export class ElectricityCalculationService {
       this.rateListLocalStorageKey,
       JSON.stringify(this.actewAGLElectricityUsageRateListSignal())
     );
+    localStorage.setItem(
+      this.supplyChargeRateStorageKey,
+      this.supplyChargeRateSignal().toString()
+    );
   }
 
+  /**
+   * Return to default rate
+   */
   returnToDefaultRate() {
     localStorage.removeItem(this.rateListLocalStorageKey);
+    localStorage.removeItem(this.supplyChargeRateStorageKey);
     this.checkSavedRate();
   }
 
@@ -63,6 +84,18 @@ export class ElectricityCalculationService {
       this.actewAGLElectricityUsageRateListSignal.update(() =>
         getDefaultActewAGLElectricityUsageRateList()
       );
+    }
+
+    const savedSupplyRate = localStorage.getItem(
+      this.supplyChargeRateStorageKey
+    );
+    if (savedSupplyRate) {
+      const supplyRate = Number.parseFloat(savedSupplyRate);
+      this.supplyChargeRateSignal.update(() =>
+        Number.isNaN(supplyRate) ? DEFAULT_SUPPLY_RATE : supplyRate
+      );
+    } else {
+      this.supplyChargeRateSignal.update(() => DEFAULT_SUPPLY_RATE);
     }
   }
 
