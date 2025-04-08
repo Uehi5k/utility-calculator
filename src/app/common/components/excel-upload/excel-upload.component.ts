@@ -1,4 +1,10 @@
-import { Component, inject, output, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  output,
+  viewChild,
+} from '@angular/core';
 import { ExcelData } from '../../models/file-upload.model';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -10,7 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   standalone: true,
 })
 export class ExcelUploadComponent {
-  fileInput = viewChild('fileInput');
+  fileInput = viewChild<ElementRef>('fileInput');
   fileSubmission = output<ExcelData>();
   spinner: NgxSpinnerService = inject(NgxSpinnerService);
 
@@ -18,6 +24,18 @@ export class ExcelUploadComponent {
    * Accept excel or csv files only
    */
   readonly accept = '.xls, .xlsx, .csv';
+
+  clearData() {
+    const element = this.fileInput();
+    if (element) {
+      element.nativeElement.value = '';
+      this.fileSubmission.emit({
+        data: [],
+        dataHeaders: [],
+        fileName: '',
+      });
+    }
+  }
 
   /**
    * Read file data on change
