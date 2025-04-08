@@ -94,7 +94,7 @@
         <hr />
         <app-actewagl-table-cost
           [(listOfTotalActewAGLCost)]="actewAGLCost.value"
-          [(supplyChargeRate)]="supplyChargeRate"
+          [supplyChargeRate]="supplyChargeRate()"
           [extraHeading]="actewAGLCost.key"
           [numberOfDays]="numberOfDays"
           [fromDate]="fromDate"
