@@ -1,4 +1,16 @@
 <h3>Daily Usage Breakdown</h3>
+
+@if (latestDateCostBreakdowns().length > 0) {
+<ul>
+  @for (each of latestDateCostBreakdowns(); track each.usageType) {
+  <li>
+    {{ each.usageType }}:
+    <strong>{{ each.rate | currency : "AUD" : "symbol" : ".4-4" }}</strong>
+  </li>
+  }
+</ul>
+}
+
 <table class="table table-striped table-responsive">
   <thead>
     <tr>

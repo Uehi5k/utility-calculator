@@ -1,4 +1,4 @@
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,7 +13,7 @@ import { roundingFloatIssue } from '../../common/utils/calculation.utils';
 
 @Component({
   selector: 'app-actewagl-daily-breakdown',
-  imports: [CommonModule, DecimalPipe],
+  imports: [CommonModule, DecimalPipe, CurrencyPipe],
   templateUrl: './actewagl-daily-breakdown.component.html',
   styleUrl: './actewagl-daily-breakdown.component.scss',
   standalone: true,
@@ -21,6 +21,14 @@ import { roundingFloatIssue } from '../../common/utils/calculation.utils';
 })
 export class ActewaglDailyBreakdownComponent {
   dateCostBreakdowns = input<Record<string, ActewAGLElectricityCost[]>>({});
+  latestDateCostBreakdowns = computed(() => {
+    const date = Object.keys(this.dateCostBreakdowns())[0];
+    if (date) {
+      return this.dateCostBreakdowns()[date];
+    }
+
+    return [];
+  });
   totalQuantity = 0;
 
   tableHeaders = [

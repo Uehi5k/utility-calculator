@@ -9,9 +9,7 @@ I build this web application as a way to remember how to practice using new Angu
 - Add a way to temporarily save the results locally on browser.
 - Add a clock to determine if the current time is Peak, Shoulder or Off-peak.
 - Add a graph to view the daily usage.
-- Display Breakdown rate usage for each type.
 - Make update to the daily breakdown when table cost inputs are updated.
-- Add a button to remove duplicated table.
 
 ## Development server
 
