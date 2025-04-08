@@ -11,9 +11,7 @@ I build this web application as a way to remember how to practice using new Angu
 - Add a graph to view the daily usage.
 - Display Breakdown rate usage for each type.
 - Make update to the daily breakdown when table cost inputs are updated.
-- Allow Table cost to adjust Supply Charge Quantity
 - Add a button to remove duplicated table.
-- Fix data in duplicated tables still referring to the original tabel.
 
 ## Development server
 
