@@ -100,6 +100,15 @@
           [fromDate]="fromDate"
           [toDate]="toDate"
         ></app-actewagl-table-cost>
+        <div class="m-auto text-center">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="removeDuplicatedTableCost(actewAGLCost.key)"
+          >
+            Remove Table
+          </button>
+        </div>
         }
       </div>
     </ng-template>

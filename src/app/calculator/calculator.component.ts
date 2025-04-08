@@ -100,12 +100,22 @@ export class CalculatorComponent implements OnInit {
     if (this.newHeading.trim().length === 0) {
       alert('Please enter heading for the new table');
     } else {
-      const keys = Object.keys(this.duplicatedData);
       const newKey = this.newHeading;
       this.duplicatedData[newKey] = signal(
         this.listOfTotalActewAGLCost() ?? []
       );
       this.newHeading = '';
+    }
+  }
+
+  /**
+   * Remove duplicated table cost
+   * @param key (string) - table's key
+   */
+  removeDuplicatedTableCost(key: string) {
+    const deleteConfirm = confirm(`Are you sure to delete ${key} Table?`);
+    if (deleteConfirm) {
+      delete this.duplicatedData[key];
     }
   }
 
