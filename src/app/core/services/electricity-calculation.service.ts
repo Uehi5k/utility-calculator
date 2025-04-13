@@ -66,8 +66,6 @@ export class ElectricityCalculationService {
    * Return to default rate
    */
   returnToDefaultRate() {
-    localStorage.removeItem(this.rateListLocalStorageKey);
-    localStorage.removeItem(this.supplyChargeRateStorageKey);
     this.checkSavedRate();
   }
 
