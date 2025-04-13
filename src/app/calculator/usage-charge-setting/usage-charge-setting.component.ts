@@ -47,6 +47,5 @@ export class UsageChargeSettingComponent {
 
   returnToDefaultRate() {
     this.electricityCalculationService.returnToDefaultRate();
-    alert('Rate has been reverted to default!');
   }
 }

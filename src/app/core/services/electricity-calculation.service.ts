@@ -66,7 +66,10 @@ export class ElectricityCalculationService {
    * Return to default rate
    */
   returnToDefaultRate() {
-    this.checkSavedRate();
+    this.actewAGLElectricityUsageRateListSignal.update(() =>
+      getDefaultActewAGLElectricityUsageRateList()
+    );
+    this.supplyChargeRateSignal.update(() => DEFAULT_SUPPLY_RATE);
   }
 
   /**
