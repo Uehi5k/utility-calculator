@@ -1,6 +1,6 @@
 <p>
   <strong
-    >{{ extraHeading().length > 0 ? `${extraHeading()}` : "" }} Table</strong
+    >{{ extraHeading().length > 0 ? `${extraHeading()}` : "" }} Tables</strong
   >
 </p>
 
@@ -120,6 +120,34 @@
     </tr>
     <tr>
       <td colspan="4" class="text-end">
+        <strong>Average Daily Cost</strong>
+      </td>
+      <td
+        [ngClass]="{
+          'text-success': averageDailyCost() <= 0,
+          'text-danger': averageDailyCost() > 0,
+          'fw-bold': true
+        }"
+      >
+        <strong>{{ averageDailyCost() | currency : "AUD" }}</strong>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-end">
+        <strong>Projected 90 Days Cost</strong>
+      </td>
+      <td
+        [ngClass]="{
+          'text-success': projectedQuarterlyCost() <= 0,
+          'text-danger': projectedQuarterlyCost() > 0,
+          'fw-bold': true
+        }"
+      >
+        <strong>{{ projectedQuarterlyCost() | currency : "AUD" }}</strong>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-end">
         <strong>Total without Solar System</strong>
       </td>
       <td
@@ -131,6 +159,38 @@
       >
         <strong>{{
           totalIncludingSupplyChargeWithoutSolarSystem() | currency : "AUD"
+        }}</strong>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-end">
+        <strong>Average Daily Cost without Solar System</strong>
+      </td>
+      <td
+        [ngClass]="{
+          'text-success': averageDailyCostWithoutSolarSystem() <= 0,
+          'text-danger': averageDailyCostWithoutSolarSystem() > 0,
+          'fw-bold': true
+        }"
+      >
+        <strong>{{
+          averageDailyCostWithoutSolarSystem() | currency : "AUD"
+        }}</strong>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-end">
+        <strong>Projected 90 Days Cost without Solar System</strong>
+      </td>
+      <td
+        [ngClass]="{
+          'text-success': projectedQuarterlyCostWithoutSolarSystem() <= 0,
+          'text-danger': projectedQuarterlyCostWithoutSolarSystem() > 0,
+          'fw-bold': true
+        }"
+      >
+        <strong>{{
+          projectedQuarterlyCostWithoutSolarSystem() | currency : "AUD"
         }}</strong>
       </td>
     </tr>

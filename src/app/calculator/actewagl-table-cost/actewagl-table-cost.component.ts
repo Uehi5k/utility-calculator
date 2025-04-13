@@ -62,8 +62,29 @@ export class ActewaglTableCostComponent {
     return this.totalWithoutSolarSystem() + this.totalSupplyCharge();
   });
 
+  averageDailyCostWithoutSolarSystem = computed<number>(
+    () =>
+      (this.totalWithoutSolarSystem() + this.totalSupplyCharge()) /
+      this.numberOfDays()
+  );
+
+  projectedQuarterlyCostWithoutSolarSystem = computed<number>(
+    () =>
+      ((this.totalWithoutSolarSystem() + this.totalSupplyCharge()) /
+        this.numberOfDays()) *
+      90
+  );
+
   totalIncludingSupply = computed<number>(
     () => this.total() + this.totalSupplyCharge()
+  );
+
+  averageDailyCost = computed<number>(
+    () => (this.total() + this.totalSupplyCharge()) / this.numberOfDays()
+  );
+
+  projectedQuarterlyCost = computed<number>(
+    () => ((this.total() + this.totalSupplyCharge()) / this.numberOfDays()) * 90
   );
 
   costReduction = computed<number>(

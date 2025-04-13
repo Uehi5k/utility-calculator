@@ -20,7 +20,8 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of tableData(); let rowIdx = $index; track rowIdx) {
+    @for (row of tableData(); let rowIdx = $index; let count = $count; track
+    rowIdx) {
     <tr>
       @for (cell of row; track $index) {
       <td
@@ -40,7 +41,11 @@
     <tr>
       <td><strong>Total consumption</strong></td>
       <td colspan="3" class="text-center">
-        <strong>{{ totalQuantity | number : "1.2-2" }} kWh</strong>
+        <strong>{{ totalQuantity | number : "1.2-2" }} kWh</strong> -
+        <strong
+          >{{ totalQuantity / tableData().length | number : "1.2-2" }} kWh /
+          day</strong
+        >
       </td>
       <td colspan="4"></td>
     </tr>

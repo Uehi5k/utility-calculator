@@ -10,6 +10,7 @@ I build this web application as a way to remember how to practice using new Angu
 - Add a clock to determine if the current time is Peak, Shoulder or Off-peak.
 - Add a graph to view the daily usage.
 - Make update to the daily breakdown when table cost inputs are updated.
+- Refactor ngClass to show red/green by using Directive. 
 
 ## Development server
 
